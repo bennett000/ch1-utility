@@ -6,7 +6,7 @@ _This is not well maintained_
 
 ## Installation
 
-`yarn add @mjb/utility`
+`yarn add @ch1/utility`
 
 ## Interfaces
 

@@ -1,6 +1,6 @@
 {
   "name": "@ch1/utility",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Utility functions I end up adding to all my projects",
   "keywords": [
     "CH1",
@@ -18,8 +18,6 @@
   "license": "LGPL-3.0",
   "private": false,
   "scripts": {
-    "prebuild": "rimraf dist && rimraf intermediate",
-    "build": "tsickle && ./compile.js",
     "test": "jest",
     "test:watch": "jest --watch"
   },
