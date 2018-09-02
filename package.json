@@ -1,9 +1,9 @@
 {
-  "name": "@mjb/utility",
+  "name": "@ch1/utility",
   "version": "0.1.0",
   "description": "Utility functions I end up adding to all my projects",
   "keywords": [
-    "MJB",
+    "CH1",
     "Utility",
     "Functions"
   ],
