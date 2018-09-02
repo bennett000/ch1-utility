@@ -1,4 +1,4 @@
-# MJB Utility
+# CH1 Utility
 
 _This is not well maintained_
 
