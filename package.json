@@ -1,6 +1,6 @@
 {
   "name": "@ch1/utility",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Utility functions I end up adding to all my projects",
   "keywords": [
     "CH1",
@@ -10,9 +10,9 @@
   "main": "src/index.ts",
   "module": "src/index.ts",
   "typings": "src/index.ts",
-  "repository": "https://github.com/bennett000/mjb-utility",
-  "homepage": "https://github.com/bennett000/mjb-utility",
-  "bugs": "https://github.com/bennett000/mjb-utility/issues",
+  "repository": "https://github.com/bennett000/ch1-utility",
+  "homepage": "https://github.com/bennett000/ch1-utility",
+  "bugs": "https://github.com/bennett000/ch1-utility/issues",
   "author": "dev@michaeljbennett.info",
   "contributors": [],
   "license": "LGPL-3.0",
