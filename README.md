@@ -16,8 +16,16 @@ _This is not well maintained_
 
 ## Functions
 
-- `noop`
 - `createBetween` `(random: () => number) => () => number`
+- `identity`
+- `isFunction`
+- `isNaN`
+- `isNumber`
+- `isNull`
+- `isObject`
+- `isString`
+- `isUndefined`
+- `noop`
 
 ```ts
 const between = createBetween(Math.random.bind(Math));
