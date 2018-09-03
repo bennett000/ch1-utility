@@ -15,6 +15,12 @@ _This is not well maintained_
 ## Functions
 
 - `noop`
+- `createBetween` `(random: () => number) => () => number`
+
+```ts
+const between = createBetween(Math.random.bind(Math));
+const randomNumber = between(0, 100); // inclusive due to Math.random
+```
 
 ## License
 
