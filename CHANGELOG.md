@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+## 0.4.0
+
+- Tsickle build/package
+
 ## 0.3.0
 
 - identity
