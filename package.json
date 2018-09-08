@@ -19,7 +19,7 @@
   "private": false,
   "scripts": {
     "prebuild": "rimraf ./dist",
-    "build": "tsickle",
+    "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -87,7 +87,6 @@
     "prettier": "^1.14.2",
     "rimraf": "^2.6.2",
     "ts-jest": "^23.1.4",
-    "tsickle": "^0.32.1",
-    "typescript": "2"
+    "typescript": "^3.0.3"
   }
 }
