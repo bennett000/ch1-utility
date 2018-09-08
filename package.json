@@ -1,6 +1,6 @@
 {
   "name": "@ch1/utility",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Utility functions I end up adding to all my projects",
   "keywords": [
     "CH1",
@@ -9,7 +9,7 @@
   ],
   "main": "dist/index.js",
   "module": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "repository": "https://github.com/bennett000/ch1-utility",
   "homepage": "https://github.com/bennett000/ch1-utility",
   "bugs": "https://github.com/bennett000/ch1-utility/issues",

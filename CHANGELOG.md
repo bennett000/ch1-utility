@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+## 0.5.1
+
+- Export types properly
+
 ## 0.5.0
 
 - ES6 build/package
