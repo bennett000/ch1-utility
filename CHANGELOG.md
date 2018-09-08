@@ -1,5 +1,10 @@
 # CHANGE LOG
 
+## 0.5.0
+
+- ES6 build/package
+- no more Tsickle
+
 ## 0.4.0
 
 - Tsickle build/package
