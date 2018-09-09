@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+## 0.6.0
+
+- Export commonjs
+
 ## 0.5.1
 
 - Export types properly
