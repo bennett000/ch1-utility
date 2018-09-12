@@ -153,10 +153,10 @@ export function objReduce<T, R>(
   d: Dictionary<T>,
   callback: (
     state: R,
-    value?: T,
-    key?: string,
-    index?: number,
-    d?: Dictionary<T>
+    value: T,
+    key: string,
+    index: number,
+    d: Dictionary<T>
   ) => R,
   init: R
 ): R {
