@@ -24,7 +24,7 @@ import {
   toString,
   toStringMax,
   unzip,
-  zip,
+  zip
 } from './utility';
 
 describe('utility functions', () => {
@@ -34,13 +34,13 @@ describe('utility functions', () => {
       const obj = arrToObj(arr);
       expect(obj[0]).toBe('a');
       expect(obj[2]).toBe('c');
-    }); 
+    });
 
     it('can use a given prop as an index', () => {
       const arr = [
-        { id: 'foo', name: 'Ms. Foo'},
-        { id: 'bar', name: 'Mr. Bar'},
-        { id: 'baz', name: 'Dr. Baz'},
+        { id: 'foo', name: 'Ms. Foo' },
+        { id: 'bar', name: 'Mr. Bar' },
+        { id: 'baz', name: 'Dr. Baz' }
       ];
       const obj = arrToObj(arr, 'id');
       expect(obj.foo).toBe(arr[0]);
@@ -48,22 +48,28 @@ describe('utility functions', () => {
       expect(obj.baz).toBe(arr[2]);
     });
 
-    it('can optionally aggregate duplicates on keys ' + 
-    'which is useless with literals', () => {
-      const arr = ['a', 'b', 'a'];
-      const obj = arrToObj(arr, undefined, true);
-      expect(obj[0]).toEqual(['a']);
-      expect(obj[1]).toEqual(['b']);
-    });
+    it(
+      'can optionally aggregate duplicates on keys ' +
+        'which is useless with literals',
+      () => {
+        const arr = ['a', 'b', 'a'];
+        const obj = arrToObj(arr, undefined, true);
+        expect(obj[0]).toEqual(['a']);
+        expect(obj[1]).toEqual(['b']);
+      }
+    );
 
-    it('can optionally aggregate duplicates on keys ' + 
-    'which is useful with objects', () => {
-      const arr = [{ id: 'a', value: 0}, { id: 'a', value: 1}];
-      const obj = arrToObj(arr, 'id', true);
-      expect(obj.a).toEqual([{ id: 'a', value: 0 }, { id: 'a', value: 1 }]);
-    });
+    it(
+      'can optionally aggregate duplicates on keys ' +
+        'which is useful with objects',
+      () => {
+        const arr = [{ id: 'a', value: 0 }, { id: 'a', value: 1 }];
+        const obj = arrToObj(arr, 'id', true);
+        expect(obj.a).toEqual([{ id: 'a', value: 0 }, { id: 'a', value: 1 }]);
+      }
+    );
   });
-  
+
   describe('createBetween', () => {
     it('is inclusive of the minimum', () => {
       const between = createBetween(() => 0);
@@ -86,11 +92,11 @@ describe('utility functions', () => {
     it('should freeze properties on an object', () => {
       const frozen = deepFreeze({
         a: 5,
-        b: 'hello',
+        b: 'hello'
       });
 
-      expect(() => (<any>frozen).a = 23).toThrowError();
-      expect(() => (<any>frozen).b = 23).toThrowError();
+      expect(() => ((<any>frozen).a = 23)).toThrowError();
+      expect(() => ((<any>frozen).b = 23)).toThrowError();
     });
 
     it('should freeze object properties on an object', () => {
@@ -98,25 +104,24 @@ describe('utility functions', () => {
         a: 5,
         b: 'hello',
         c: {
-          d: 'test',
+          d: 'test'
         }
       });
 
-      expect(() => (<any>frozen).c.d = 23).toThrowError();
+      expect(() => ((<any>frozen).c.d = 23)).toThrowError();
     });
 
     it('should freeze nested arrays', () => {
       const frozen = deepFreeze([[1]]);
 
-      expect(() => (<any>frozen)[0][0] = 5).toThrowError();
+      expect(() => ((<any>frozen)[0][0] = 5)).toThrowError();
       expect(() => (<any>frozen)[0].push(5)).toThrowError();
     });
 
     it('should skip frozen sub-objects', () => {
       const frozen = deepFreeze({ test: Object.freeze({ nest: { val: 1 } }) });
-      expect(() => (<any>frozen).test.nest.val = 5).not.toThrowError();
+      expect(() => ((<any>frozen).test.nest.val = 5)).not.toThrowError();
     });
-
   });
 
   describe('findCaseInsensitivePropInObj', () => {
@@ -160,11 +165,11 @@ describe('utility functions', () => {
 
   describe('isFunction', () => {
     it('recognizes functions', () => {
-      expect(isFunction(function () { })).toBe(true);
+      expect(isFunction(function() {})).toBe(true);
     });
 
     it('recognizes arrow functions', () => {
-      expect(isFunction(() => { })).toBe(true);
+      expect(isFunction(() => {})).toBe(true);
     });
 
     it('rejects non functions', () => {
@@ -181,7 +186,6 @@ describe('utility functions', () => {
       expect(isNaN(0)).toBe(false);
     });
   });
-
 
   describe('isNumber', () => {
     it('recognizes numbers', () => {
@@ -261,14 +265,14 @@ describe('utility functions', () => {
   describe('objFilter', () => {
     it('iterates a filter over an object', () => {
       const obj = { a: 1, b: 2, c: 3 };
-      const filtered = objFilter(obj, (value) => {
+      const filtered = objFilter(obj, value => {
         if (value === 2) {
           return false;
         }
         return true;
       });
-      expect(filtered).toEqual({ a:1, c: 3 });
-    }); 
+      expect(filtered).toEqual({ a: 1, c: 3 });
+    });
   });
 
   describe('partial function', () => {
@@ -277,8 +281,9 @@ describe('utility functions', () => {
     }
 
     it('should work for a simple single argument', () => {
-      expect(partial<(b: number, c: number) => number>(addThreeArgs, 3)(2, 3))
-        .toBe(9);
+      expect(
+        partial<(b: number, c: number) => number>(addThreeArgs, 3)(2, 3)
+      ).toBe(9);
     });
 
     it('should work for two arguments', () => {
@@ -301,7 +306,7 @@ describe('utility functions', () => {
     describe('toGtZeroIntMax', () => {
       it('returns values in range as base 10 integers', () => {
         expect(toGtZeroIntMax(7, '6')).toBe(6);
-      }); 
+      });
 
       it('caps numbers at the max', () => {
         expect(toGtZeroIntMax(10, '10')).toBe(10);
@@ -311,13 +316,13 @@ describe('utility functions', () => {
       it('moves negative numbers up to zero', () => {
         expect(toGtZeroIntMax(10, '-12')).toBe(0);
       });
-    }); 
+    });
 
     describe('toIntBetween', () => {
       it('caps values at the minimum', () => {
         expect(toIntBetween(0, 10, '0')).toBe(0);
         expect(toIntBetween(0, 10, '-1')).toBe(0);
-      }); 
+      });
 
       it('caps values at the maximum', () => {
         expect(toIntBetween(0, 10, '10')).toBe(10);
@@ -332,7 +337,7 @@ describe('utility functions', () => {
     describe('toIntBetweenOptional', () => {
       it('does nothing if given no min/max', () => {
         expect(toIntBetweenOptional(undefined, undefined, '7')).toBe(7);
-      }); 
+      });
 
       it('returns the maximum if given only a maximum', () => {
         expect(toIntBetweenOptional(undefined, 10, '10')).toBe(10);
@@ -375,8 +380,8 @@ describe('utility functions', () => {
     it('splits an object into keys/values', () => {
       const result = unzip({ a: 1, b: 2, c: 3 });
       expect(result.keys).toEqual(['a', 'b', 'c']);
-      expect(result.values).toEqual([1, 2, 3 ]);
-    }); 
+      expect(result.values).toEqual([1, 2, 3]);
+    });
 
     it('joins an array of keys and array of values', () => {
       const keys = ['a', 'b', 'c'];
