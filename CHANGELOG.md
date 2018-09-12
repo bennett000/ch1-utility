@@ -1,5 +1,27 @@
 # CHANGE LOG
 
+## 0.7.0
+
+- arrToObj
+- deepFreeze
+- findCaseInsensitivePropInObj
+- hasProp
+- isBoolean
+- partial
+- pluck
+- objEach
+- objFilter
+- objReduce
+- toGtZeroIntMax
+- toInt
+- toIntBetweenOptional
+- toIntMax
+- toIntMin
+- toString
+- toStringMax
+- unzip
+- zip
+
 ## 0.6.0
 
 - Export commonjs
