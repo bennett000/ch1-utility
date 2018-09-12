@@ -1,6 +1,6 @@
 {
   "name": "@ch1/utility",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Utility functions I end up adding to all my projects",
   "keywords": [
     "CH1",
@@ -21,6 +21,7 @@
     "prebuild": "rimraf ./dist",
     "build": "tsc",
     "postbuild": "rollup --input ./dist/index.js --format cjs --file ./dist/index.cjs.js",
+    "pretest": "rimraf ./dist && rimraf ./coverage",
     "test": "jest",
     "test:watch": "jest --watch"
   },

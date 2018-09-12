@@ -14,7 +14,12 @@ _This is not well maintained_
 
 ## Functions
 
+- `arrToObj`
 - `createBetween` `(random: () => number) => () => number`
+- `deepFreeze`
+- `findCaseInsensitivePropInObj`
+- `hasProp`
+- `isBoolean`
 - `identity`
 - `isFunction`
 - `isNaN`
@@ -24,6 +29,20 @@ _This is not well maintained_
 - `isString`
 - `isUndefined`
 - `noop`
+- `partial`
+- `pluck`
+- `objEach`
+- `objFilter`
+- `objReduce`
+- `toGtZeroIntMax`
+- `toInt`
+- `toIntBetweenOptional`
+- `toIntMax`
+- `toIntMin`
+- `toString`
+- `toStringMax`
+- `unzip`
+- `zip`
 
 ```ts
 const between = createBetween(Math.random.bind(Math));
