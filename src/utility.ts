@@ -191,6 +191,27 @@ export function toInt(val: any): number {
   return parseInt(val, 10);
 }
 
+export function toIntArray(inputArr: any[]): number[] {
+  if (Array.isArray(inputArr)) {
+    return inputArr.map(toInt);
+  }
+  return [];
+}
+
+export function toIntArrayMax(max: number, inputArr: any[]): number[] {
+  if (Array.isArray(inputArr)) {
+    return inputArr.map(thing => toIntMax(max, thing)).filter(Boolean);
+  }
+  return [];
+}
+
+export function toIntArrayMin(max: number, inputArr: any[]): number[] {
+  if (Array.isArray(inputArr)) {
+    return inputArr.map(thing => toIntMin(max, thing)).filter(Boolean);
+  }
+  return [];
+}
+
 export function toIntBetween(min: number, max: number, val: any) {
   const asInt = toInt(val);
 
@@ -247,6 +268,22 @@ export function toIntMin(min: number, val: any): number {
 
 export function toString(val: any): string {
   return val + '';
+}
+
+export function toStringArray(input: any[]): string[] {
+  if (Array.isArray(input)) {
+    return input.map(toString);
+  }
+
+  return [];
+}
+
+export function toStringArrayMax(max: number, input: any[]): string[] {
+  if (Array.isArray(input)) {
+    return input.map(thing => toStringMax(max, thing));
+  }
+
+  return [];
 }
 
 export function toStringMax(max: number, val: any): string {
