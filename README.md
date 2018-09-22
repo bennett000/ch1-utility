@@ -36,10 +36,15 @@ _This is not well maintained_
 - `objReduce`
 - `toGtZeroIntMax`
 - `toInt`
+- `toIntArray`
+- `toIntArrayMax`
+- `toIntArrayMin`
 - `toIntBetweenOptional`
 - `toIntMax`
 - `toIntMin`
 - `toString`
+- `toStringArray`
+- `toStringArrayMax`
 - `toStringMax`
 - `unzip`
 - `zip`

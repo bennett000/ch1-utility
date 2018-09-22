@@ -1,5 +1,13 @@
 # CHANGE LOG
 
+## 0.8.0
+
+- toIntArray
+- toIntArrayMax
+- toIntArrayMin
+- toStringArray
+- toStringArrayMax
+
 ## 0.7.0
 
 - arrToObj

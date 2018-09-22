@@ -19,9 +19,14 @@ import {
   objFilter,
   pluck,
   toGtZeroIntMax,
+  toIntArray,
+  toIntArrayMax,
+  toIntArrayMin,
   toIntBetween,
   toIntBetweenOptional,
   toString,
+  toStringArray,
+  toStringArrayMax,
   toStringMax,
   unzip,
   zip
@@ -303,6 +308,36 @@ describe('utility functions', () => {
   });
 
   describe('to integer conversions', () => {
+    describe('toIntArray', () => {
+      it('returns an array of integer values', () => {
+        expect(toIntArray(['1', '2', '3'])).toEqual([1, 2, 3]);
+      });
+
+      it('returns an array no matter what input', () => {
+        expect(toIntArray('foo' as any)).toEqual([]);
+      });
+    });
+
+    describe('toIntArrayMax', () => {
+      it('returns an array of integer values', () => {
+        expect(toIntArrayMax(2, ['1', '2', '3'])).toEqual([1, 2, 2]);
+      });
+
+      it('returns an array no matter what input', () => {
+        expect(toIntArrayMax(2, 'foo' as any)).toEqual([]);
+      });
+    });
+
+    describe('toIntArrayMin', () => {
+      it('returns an array of integer values', () => {
+        expect(toIntArrayMin(2, ['1', '2', '3'])).toEqual([2, 2, 3]);
+      });
+
+      it('returns an array no matter what input', () => {
+        expect(toIntArrayMin(2, 'foo' as any)).toEqual([]);
+      });
+    });
+
     describe('toGtZeroIntMax', () => {
       it('returns values in range as base 10 integers', () => {
         expect(toGtZeroIntMax(7, '6')).toBe(6);
@@ -363,6 +398,26 @@ describe('utility functions', () => {
     it('calls toString on Objects', () => {
       const serializer = { toString: () => '3' };
       expect(toString(serializer)).toBe('3');
+    });
+  });
+
+  describe('toStringArray', () => {
+    it('converts array elements to strings', () => {
+      expect(toStringArray([1, 2, 3])).toEqual(['1', '2', '3']);
+    });
+
+    it('returns arrays no matter what', () => {
+      expect(toStringArray(7 as any)).toEqual([]);
+    });
+  });
+
+  describe('toStringArrayMax', () => {
+    it('converts array elements to strings with max lens', () => {
+      expect(toStringArrayMax(1, [11, 21, 31])).toEqual(['1', '2', '3']);
+    });
+
+    it('returns arrays no matter what', () => {
+      expect(toStringArrayMax(1, 7 as any)).toEqual([]);
     });
   });
 
