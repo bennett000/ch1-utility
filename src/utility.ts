@@ -1,25 +1,26 @@
-import { Dictionary } from './interfaces';
+import type { Dictionary, Parseable, Stringable } from './interfaces';
 
-export function arrToObj<T>(
+export function arrToObj<T extends Record<string, unknown>>(
   arr: T[],
   prop?: string,
   aggregate?: boolean
 ): Dictionary<T> | Dictionary<T[]> {
   return arr.reduce(
     (state: Dictionary<T> | Dictionary<T[]>, el: T, i: number) => {
-      let index;
+      let index: string | number;
       if (!prop) {
         index = i;
       } else {
-        index = (<any>el)[prop];
+        index = el[prop] as string | number;
       }
       if (aggregate) {
-        if (!state[index]) {
-          state[index] = <T[]>[];
+        const key = String(index);
+        if (!state[key]) {
+          state[key] = [] as T[];
         }
-        (<any>state[index]).push(el);
+        (state[key] as T[]).push(el);
       } else {
-        state[index] = el;
+        state[String(index)] = el;
       }
       return state;
     },
@@ -53,14 +54,16 @@ export function createBetween(random: () => number) {
 
 export function deepFreeze<T>(obj: T): T {
   if (Array.isArray(obj)) {
-    return (<any>Object).freeze(obj.map(deepFreeze)) as T;
+    return Object.freeze(obj.map(deepFreeze)) as T;
   }
 
   if (isObject(obj)) {
-    for (let i in obj) {
-      if (isObject((<any>obj)[i])) {
-        if (!Object.isFrozen((<any>obj)[i])) {
-          (<any>obj)[i] = deepFreeze((<any>obj)[i]);
+    const record = obj as Record<string, unknown>;
+    for (const key in record) {
+      if (Object.prototype.hasOwnProperty.call(record, key)) {
+        const value = record[key];
+        if (isObject(value) && !Object.isFrozen(value)) {
+          record[key] = deepFreeze(value);
         }
       }
     }
@@ -76,11 +79,11 @@ export function identity<T>(thing: T): T {
 export function findCaseInsensitivePropInObj<T>(
   obj: Dictionary<T>,
   prop: string
-): T | false {
+): T | undefined | false {
   const lProp = prop.toLowerCase();
   return objReduce(
     obj,
-    (result: T | false, el: T, objProp: string) => {
+    (result: T | undefined | false, el: T | undefined, objProp: string) => {
       if (result) {
         return result;
       }
@@ -91,7 +94,7 @@ export function findCaseInsensitivePropInObj<T>(
 
       return false;
     },
-    false as T | false
+    false as T | undefined | false
   );
 }
 
@@ -170,8 +173,13 @@ export function noop(): void {}
 
 export function objEach<T>(
   d: Dictionary<T>,
-  callback: (value: T, key?: string, index?: number, d?: Dictionary<T>) => any
-) {
+  callback: (
+    value: T | undefined,
+    key?: string,
+    index?: number,
+    d?: Dictionary<T>
+  ) => void
+): void {
   Object.keys(d).forEach((key, i) => {
     callback(d[key], key, i, d);
   });
@@ -179,13 +187,18 @@ export function objEach<T>(
 
 export function objFilter<T>(
   d: Dictionary<T>,
-  callback: (value: T, key: string, index: number) => boolean
+  callback: (value: T | undefined, key: string, index: number) => boolean
 ): Dictionary<T> {
   return objReduce(
     d,
-    (state: Dictionary<T>, value: T, key: string, index: number) => {
+    (
+      state: Dictionary<T>,
+      value: T | undefined,
+      key: string,
+      index: number
+    ) => {
       if (callback(value, key, index)) {
-        state[key] = value;
+        state[key] = value as T;
       }
       return state;
     },
@@ -197,7 +210,7 @@ export function objReduce<T, R>(
   d: Dictionary<T>,
   callback: (
     state: R,
-    value: T,
+    value: T | undefined,
     key: string,
     index: number,
     d: Dictionary<T>
@@ -209,15 +222,19 @@ export function objReduce<T, R>(
   }, init);
 }
 
-export function partial<T>(f: Function, ...boundArg: any[]) {
-  return (...args: any[]) => <T>f(...boundArg, ...args);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Required for flexible partial application
+export function partial<R>(
+  f: (...args: any[]) => R,
+  ...boundArgs: unknown[]
+): (...args: unknown[]) => R {
+  return (...args: unknown[]) => f(...boundArgs, ...args);
 }
 
 export function pluck<T>(prop: string, haystack: Dictionary<T>) {
   return haystack[prop];
 }
 
-export function toGtZeroIntMax(max: number, val: any): number {
+export function toGtZeroIntMax(max: number, val: Parseable): number {
   const num = toInt(val);
 
   if (num > max) {
@@ -231,32 +248,32 @@ export function toGtZeroIntMax(max: number, val: any): number {
   return num;
 }
 
-export function toInt(val: any): number {
-  return parseInt(val, 10);
+export function toInt(val: Parseable): number {
+  return parseInt(val as string, 10);
 }
 
-export function toIntArray(inputArr: any[]): number[] {
+export function toIntArray(inputArr: Parseable[]): number[] {
   if (Array.isArray(inputArr)) {
     return inputArr.map(toInt);
   }
   return [];
 }
 
-export function toIntArrayMax(max: number, inputArr: any[]): number[] {
+export function toIntArrayMax(max: number, inputArr: Parseable[]): number[] {
   if (Array.isArray(inputArr)) {
     return inputArr.map(thing => toIntMax(max, thing)).filter(Boolean);
   }
   return [];
 }
 
-export function toIntArrayMin(max: number, inputArr: any[]): number[] {
+export function toIntArrayMin(max: number, inputArr: Parseable[]): number[] {
   if (Array.isArray(inputArr)) {
     return inputArr.map(thing => toIntMin(max, thing)).filter(Boolean);
   }
   return [];
 }
 
-export function toIntBetween(min: number, max: number, val: any) {
+export function toIntBetween(min: number, max: number, val: Parseable): number {
   const asInt = toInt(val);
 
   if (asInt < min) {
@@ -273,7 +290,7 @@ export function toIntBetween(min: number, max: number, val: any) {
 export function toIntBetweenOptional(
   min: number | undefined,
   max: number | undefined,
-  val: any
+  val: Parseable
 ): number {
   if (min === undefined && max === undefined) {
     return toInt(val);
@@ -290,7 +307,7 @@ export function toIntBetweenOptional(
   return toIntBetween(min as number, max as number, val);
 }
 
-export function toIntMax(max: number, val: any): number {
+export function toIntMax(max: number, val: Parseable): number {
   const num = toInt(val);
 
   if (num > max) {
@@ -300,7 +317,7 @@ export function toIntMax(max: number, val: any): number {
   return num;
 }
 
-export function toIntMin(min: number, val: any): number {
+export function toIntMin(min: number, val: Parseable): number {
   const num = toInt(val);
 
   if (num < min) {
@@ -310,11 +327,11 @@ export function toIntMin(min: number, val: any): number {
   return num;
 }
 
-export function toString(val: any): string {
+export function toString(val: Stringable): string {
   return val + '';
 }
 
-export function toStringArray(input: any[]): string[] {
+export function toStringArray(input: Stringable[]): string[] {
   if (Array.isArray(input)) {
     return input.map(toString);
   }
@@ -322,7 +339,7 @@ export function toStringArray(input: any[]): string[] {
   return [];
 }
 
-export function toStringArrayMax(max: number, input: any[]): string[] {
+export function toStringArrayMax(max: number, input: Stringable[]): string[] {
   if (Array.isArray(input)) {
     return input.map(thing => toStringMax(max, thing));
   }
@@ -330,16 +347,16 @@ export function toStringArrayMax(max: number, input: any[]): string[] {
   return [];
 }
 
-export function toStringMax(max: number, val: any): string {
+export function toStringMax(max: number, val: Stringable): string {
   const v = toString(val);
   return v.length > max ? v.slice(0, max) : v;
 }
 
 export function unzip<T>(
   dictionary: Dictionary<T>
-): { keys: string[]; values: T[] } {
+): { keys: string[]; values: (T | undefined)[] } {
   return Object.keys(dictionary).reduce(
-    (s: { keys: string[]; values: T[] }, val: string) => {
+    (s: { keys: string[]; values: (T | undefined)[] }, val: string) => {
       s.keys.push(val);
       s.values.push(dictionary[val]);
 
@@ -353,18 +370,24 @@ export function unzip<T>(
 }
 
 /**
- *  If keys/values have different lengths the expect behavior is to "underflow"
+ *  If keys/values have different lengths the expected behavior is to "underflow"
  *  values.  Non values will be initialized to undefined. Non keys will be
  *  ignored.
  *
  *  If there are duplicate keys the last assignment "wins", this would be the
  *  key with the highest index in the given keys array
  */
-export function zip<T>(keys: string[], values: T[]): Dictionary<T> {
-  return keys.reduce((o: Dictionary<T>, key: string, i: number) => {
-    o[key] = values[i];
-    return o;
-  }, {});
+export function zip<T>(
+  keys: string[],
+  values: T[]
+): Dictionary<T | undefined> {
+  return keys.reduce(
+    (o: Dictionary<T | undefined>, key: string, i: number) => {
+      o[key] = values[i];
+      return o;
+    },
+    {}
+  );
 }
 
 /**
