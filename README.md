@@ -12,6 +12,14 @@ _This is not well maintained_
 
 - `Dictionary<T>`
 
+## Types
+
+- `DeepReadonly<T>`
+
+## Constants
+
+- `EPSILON` - `0.00001`
+
 ## Functions
 
 - `arrToObj`
@@ -29,16 +37,17 @@ _This is not well maintained_
 - `isString`
 - `isUndefined`
 - `noop`
-- `partial`
-- `pluck`
 - `objEach`
 - `objFilter`
 - `objReduce`
+- `partial`
+- `pluck`
 - `toGtZeroIntMax`
 - `toInt`
 - `toIntArray`
 - `toIntArrayMax`
 - `toIntArrayMin`
+- `toIntBetween`
 - `toIntBetweenOptional`
 - `toIntMax`
 - `toIntMin`
@@ -48,6 +57,9 @@ _This is not well maintained_
 - `toStringMax`
 - `unzip`
 - `zip`
+- `betweenInt` `(rando: () => number, min: number, max: number) => number`
+- `isCloseToZero` `(a: number, epsilon?: number) => boolean`
+- `isValueCloseToTarget` `(value: number, target: number, epsilon?: number) => boolean`
 
 ```ts
 const between = createBetween(Math.random.bind(Math));
