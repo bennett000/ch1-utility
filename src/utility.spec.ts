@@ -4,6 +4,7 @@ import {
   betweenInt,
   createBetween,
   deepFreeze,
+  EPSILON,
   findCaseInsensitivePropInObj,
   hasProp,
   identity,
@@ -37,6 +38,12 @@ import {
 } from './utility';
 
 describe('utility functions', () => {
+  describe('EPSILON', () => {
+    it('is exported and equals 0.00001', () => {
+      expect(EPSILON).toBe(0.00001);
+    });
+  });
+
   describe('arrToObj', () => {
     it('literally converts an array to an Object dictionary', () => {
       const arr = ['a', 'b', 'c'];
@@ -88,6 +95,26 @@ describe('utility functions', () => {
     it('is dependent on the given random function for max exclusivity', () => {
       const between = createBetween(() => 5);
       expect(between(0, 100)).toBe(500);
+    });
+
+    it('throws error for NaN minimum', () => {
+      const between = createBetween(() => 0.5);
+      expect(() => between(NaN, 100)).toThrow('min and max must be valid numbers');
+    });
+
+    it('throws error for NaN maximum', () => {
+      const between = createBetween(() => 0.5);
+      expect(() => between(0, NaN)).toThrow('min and max must be valid numbers');
+    });
+
+    it('throws error when minimum >= maximum', () => {
+      const between = createBetween(() => 0.5);
+      expect(() => between(100, 50)).toThrow('minimum must be less than maximum');
+    });
+
+    it('throws error when minimum equals maximum', () => {
+      const between = createBetween(() => 0.5);
+      expect(() => between(50, 50)).toThrow('minimum must be less than maximum');
     });
   });
 
@@ -184,6 +211,16 @@ describe('utility functions', () => {
     it('rejects non functions', () => {
       expect(isFunction({})).toBe(false);
     });
+
+    it('recognizes class constructors as functions', () => {
+      // eslint-disable-next-line @typescript-eslint/no-extraneous-class
+      class TestClass {}
+      expect(isFunction(TestClass)).toBe(true);
+    });
+
+    it('recognizes async functions', () => {
+      expect(isFunction(async () => {})).toBe(true);
+    });
   });
 
   describe('isNaN', () => {
@@ -227,6 +264,19 @@ describe('utility functions', () => {
 
     it('rejects null', () => {
       expect(isObject(null)).toBe(false);
+    });
+
+    it('returns true for arrays (documented behavior)', () => {
+      expect(isObject([])).toBe(true);
+      expect(isObject([1, 2, 3])).toBe(true);
+    });
+
+    it('returns true for Date objects', () => {
+      expect(isObject(new Date())).toBe(true);
+    });
+
+    it('returns true for RegExp objects', () => {
+      expect(isObject(/test/)).toBe(true);
     });
   });
 
@@ -470,6 +520,24 @@ describe('utility functions', () => {
       expect(isCloseToZero(0.5, 1)).toBe(true);
       expect(isCloseToZero(1.5, 1)).toBe(false);
     });
+
+    it('throws error for negative epsilon', () => {
+      expect(() => isCloseToZero(0, -1)).toThrow(
+        'epsilon must be a positive number'
+      );
+    });
+
+    it('throws error for zero epsilon', () => {
+      expect(() => isCloseToZero(0, 0)).toThrow(
+        'epsilon must be a positive number'
+      );
+    });
+
+    it('throws error for NaN epsilon', () => {
+      expect(() => isCloseToZero(0, NaN)).toThrow(
+        'epsilon must be a positive number'
+      );
+    });
   });
 
   describe('isValueCloseToTarget', () => {
@@ -489,6 +557,24 @@ describe('utility functions', () => {
       expect(isValueCloseToTarget(5.5, 5, 1)).toBe(true);
       expect(isValueCloseToTarget(6.5, 5, 1)).toBe(false);
     });
+
+    it('throws error for negative epsilon', () => {
+      expect(() => isValueCloseToTarget(5, 5, -1)).toThrow(
+        'epsilon must be a positive number'
+      );
+    });
+
+    it('throws error for zero epsilon', () => {
+      expect(() => isValueCloseToTarget(5, 5, 0)).toThrow(
+        'epsilon must be a positive number'
+      );
+    });
+
+    it('throws error for NaN epsilon', () => {
+      expect(() => isValueCloseToTarget(5, 5, NaN)).toThrow(
+        'epsilon must be a positive number'
+      );
+    });
   });
 
   describe('betweenInt', () => {
@@ -498,6 +584,30 @@ describe('utility functions', () => {
 
     it('is dependent on the given random function for max exclusivity', () => {
       expect(betweenInt(() => 5, 0, 100)).toBe(500);
+    });
+
+    it('throws error for NaN min', () => {
+      expect(() => betweenInt(() => 0.5, NaN, 100)).toThrow(
+        'min and max must be valid numbers'
+      );
+    });
+
+    it('throws error for NaN max', () => {
+      expect(() => betweenInt(() => 0.5, 0, NaN)).toThrow(
+        'min and max must be valid numbers'
+      );
+    });
+
+    it('throws error when ceil(min) >= floor(max)', () => {
+      expect(() => betweenInt(() => 0.5, 100, 50)).toThrow(
+        'ceil(min) must be less than floor(max)'
+      );
+    });
+
+    it('throws error when min equals max', () => {
+      expect(() => betweenInt(() => 0.5, 50, 50)).toThrow(
+        'ceil(min) must be less than floor(max)'
+      );
     });
   });
 });
