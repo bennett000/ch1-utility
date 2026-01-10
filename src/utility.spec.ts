@@ -1,22 +1,23 @@
+import { describe, it, expect } from 'vitest';
 import {
   arrToObj,
   createBetween,
   deepFreeze,
+  findCaseInsensitivePropInObj,
+  hasProp,
   identity,
+  isBoolean,
   isFunction,
-  isNumber,
-  isObject,
   isNaN,
   isNull,
+  isNumber,
+  isObject,
   isString,
   isUndefined,
   noop,
-  partial,
-  findCaseInsensitivePropInObj,
-  hasProp,
-  isBoolean,
   objEach,
   objFilter,
+  partial,
   pluck,
   toGtZeroIntMax,
   toIntArray,
@@ -170,7 +171,7 @@ describe('utility functions', () => {
 
   describe('isFunction', () => {
     it('recognizes functions', () => {
-      expect(isFunction(function() {})).toBe(true);
+      expect(isFunction(function () {})).toBe(true);
     });
 
     it('recognizes arrow functions', () => {

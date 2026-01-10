@@ -61,13 +61,13 @@ export function identity<T>(thing: T): T {
 export function findCaseInsensitivePropInObj<T>(
   obj: Dictionary<T>,
   prop: string
-): T | boolean {
+): T | false {
   const lProp = prop.toLowerCase();
   return objReduce(
     obj,
-    (obj: any, el: any, objProp: string) => {
-      if (obj) {
-        return obj;
+    (result: T | false, el: T, objProp: string) => {
+      if (result) {
+        return result;
       }
 
       if (lProp === objProp.toLowerCase()) {
@@ -76,49 +76,46 @@ export function findCaseInsensitivePropInObj<T>(
 
       return false;
     },
-    false
+    false as T | false
   );
 }
 
-export function hasProp(prop: string, haystack: Dictionary<any>): boolean {
+export function hasProp(prop: string, haystack: Dictionary<unknown>): boolean {
   return haystack[prop] ? true : false;
 }
 
-export function isBoolean(arg: any): arg is boolean {
-  if (typeof arg === 'boolean') {
-    return true;
-  }
-  return false;
+export function isBoolean(arg: unknown): arg is boolean {
+  return typeof arg === 'boolean';
 }
 
-export function isFunction(thing: any): thing is (() => any) {
+export function isFunction(thing: unknown): thing is (...args: unknown[]) => unknown {
   return typeof thing === 'function';
 }
 
-export function isNaN(thing: any): boolean {
+export function isNaN(thing: unknown): boolean {
   return thing !== thing;
 }
 
-export function isNull(thing: any): thing is null {
+export function isNull(thing: unknown): thing is null {
   return thing === null;
 }
 
-export function isNumber(thing: any): thing is number {
+export function isNumber(thing: unknown): thing is number {
   return typeof thing === 'number';
 }
 
-export function isObject(thing: any): thing is Object {
+export function isObject(thing: unknown): thing is Record<string, unknown> {
   if (!thing) {
     return false;
   }
   return typeof thing === 'object';
 }
 
-export function isString(thing: any): thing is string {
+export function isString(thing: unknown): thing is string {
   return typeof thing === 'string';
 }
 
-export function isUndefined(thing: any): thing is void {
+export function isUndefined(thing: unknown): thing is undefined {
   return thing === undefined;
 }
 

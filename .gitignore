@@ -1,24 +1,26 @@
-# Mac.
-.DS_STORE
+# Mac
+.DS_Store
 
-# Node.
-node_modules
-npm-debug.log
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# Vim / Emacs / intellij
+# IDE
 *~
 *.swp
 *.swo
-*~
-*#
-.idea
+.idea/
+.vscode/
 
-# tmp folders
-tmp
-
+# Build output
 dist/
-coverage/
-intermediate/
 
-.yarnclean
-yarn-error*
+# Test coverage
+coverage/
+
+# Temporary
+tmp/
+*.tsbuildinfo
