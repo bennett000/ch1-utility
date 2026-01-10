@@ -1,12 +1,14 @@
 import { describe, it, expect } from 'vitest';
 import {
   arrToObj,
+  betweenInt,
   createBetween,
   deepFreeze,
   findCaseInsensitivePropInObj,
   hasProp,
   identity,
   isBoolean,
+  isCloseToZero,
   isFunction,
   isNaN,
   isNull,
@@ -14,6 +16,7 @@ import {
   isObject,
   isString,
   isUndefined,
+  isValueCloseToTarget,
   noop,
   objEach,
   objFilter,
@@ -443,6 +446,58 @@ describe('utility functions', () => {
       const keys = ['a', 'b', 'c'];
       const values = [1, 2, 3];
       expect(zip(keys, values)).toEqual({ a: 1, b: 2, c: 3 });
+    });
+  });
+
+  describe('isCloseToZero', () => {
+    it('returns true for zero', () => {
+      expect(isCloseToZero(0)).toBe(true);
+    });
+
+    it('returns true for small positive numbers within epsilon', () => {
+      expect(isCloseToZero(0.000001)).toBe(true);
+    });
+
+    it('returns true for small negative numbers within epsilon', () => {
+      expect(isCloseToZero(-0.000001)).toBe(true);
+    });
+
+    it('returns false for numbers outside epsilon', () => {
+      expect(isCloseToZero(0.001)).toBe(false);
+    });
+
+    it('works with custom epsilon', () => {
+      expect(isCloseToZero(0.5, 1)).toBe(true);
+      expect(isCloseToZero(1.5, 1)).toBe(false);
+    });
+  });
+
+  describe('isValueCloseToTarget', () => {
+    it('returns true when values are equal', () => {
+      expect(isValueCloseToTarget(5, 5)).toBe(true);
+    });
+
+    it('returns true when values are within epsilon', () => {
+      expect(isValueCloseToTarget(5.000001, 5)).toBe(true);
+    });
+
+    it('returns false when values differ by more than epsilon', () => {
+      expect(isValueCloseToTarget(5.001, 5)).toBe(false);
+    });
+
+    it('works with custom epsilon', () => {
+      expect(isValueCloseToTarget(5.5, 5, 1)).toBe(true);
+      expect(isValueCloseToTarget(6.5, 5, 1)).toBe(false);
+    });
+  });
+
+  describe('betweenInt', () => {
+    it('is inclusive of the minimum', () => {
+      expect(betweenInt(() => 0, 0, 100)).toBe(0);
+    });
+
+    it('is dependent on the given random function for max exclusivity', () => {
+      expect(betweenInt(() => 5, 0, 100)).toBe(500);
     });
   });
 });

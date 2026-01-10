@@ -319,3 +319,53 @@ export function zip<T>(keys: string[], values: T[]): Dictionary<T> {
     return o;
   }, {});
 }
+
+/**
+ * Default epsilon for floating point comparisons.
+ */
+const EPSILON = 0.00001;
+
+/**
+ * Checks if a number is close to zero within epsilon tolerance.
+ *
+ * @param a - Number to check
+ * @param epsilon - Tolerance (default 0.00001)
+ * @returns True if |a| < epsilon
+ */
+export function isCloseToZero(a: number, epsilon = EPSILON): boolean {
+  return Math.abs(a) < epsilon;
+}
+
+/**
+ * Checks if two numbers are close to each other within epsilon tolerance.
+ *
+ * @param value - First number
+ * @param target - Second number
+ * @param epsilon - Tolerance (default 0.00001)
+ * @returns True if |value - target| < epsilon
+ */
+export function isValueCloseToTarget(
+  value: number,
+  target: number,
+  epsilon = EPSILON
+): boolean {
+  return Math.abs(value - target) < epsilon;
+}
+
+/**
+ * Generates a random integer between min (inclusive) and max (exclusive).
+ *
+ * @param rando - Random number generator function returning [0, 1)
+ * @param min - Minimum value (inclusive)
+ * @param max - Maximum value (exclusive)
+ * @returns Random integer in range [ceil(min), floor(max))
+ */
+export function betweenInt(
+  rando: () => number,
+  min: number,
+  max: number
+): number {
+  const minCeiled = Math.ceil(min);
+  const maxFloored = Math.floor(max);
+  return Math.floor(rando() * (maxFloored - minCeiled) + minCeiled);
+}
